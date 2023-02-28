@@ -1,4 +1,6 @@
 import { db } from "../config/database.connect.js"
+import { v4 as uuid } from "uuid"
+import bcrypt from "bcrypt"
 
 //Cadastro de usuário
 export async function signup(req, res) {
@@ -9,7 +11,9 @@ export async function signup(req, res) {
 
         if (alreadyExist) return res.sendStatus(409)
 
-        await db.query(`INSERT INTO users (name, email, password) VALUES ('${name}', '${email}', '${password}');`)
+        const hashedPassword = bcrypt.hashSync(password, 10)
+
+        await db.query(`INSERT INTO users (name, email, password) VALUES ('${name}', '${email}', '${hashedPassword}');`)
 
         res.sendStatus(201)
     } catch (error) {
@@ -20,5 +24,14 @@ export async function signup(req, res) {
 
 //Login
 export async function signin(req, res) {
-    res.send("Rota de login")
+    const { email, password } = req.body
+
+    try {
+
+
+
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
+
 }
