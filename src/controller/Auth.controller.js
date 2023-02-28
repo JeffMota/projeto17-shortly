@@ -9,7 +9,7 @@ export async function signup(req, res) {
 
         const alreadyExist = await db.query(`SELECT * FROM users WHERE email = '${email}';`)
 
-        if (alreadyExist) return res.sendStatus(409)
+        if (alreadyExist.rows.length > 0) return res.sendStatus(409)
 
         const hashedPassword = bcrypt.hashSync(password, 10)
 
@@ -27,7 +27,26 @@ export async function signin(req, res) {
     const { email, password } = req.body
 
     try {
+        const user = await db.query(`SELECT * FROM users WHERE email = '${email}';`)
+        const passwordIsCorrect = bcrypt.compareSync(password, user.rows[0].password)
+        if (!passwordIsCorrect) return res.sendStatus(401)
 
+        const alreadyExist = await db.query(`SELECT * FROM sessions WHERE "userId" = ${user.rows[0].id};`)
+
+        if (alreadyExist.rows.length > 0) {
+
+            const token = uuid()
+
+            await db.query(`UPDATE sessions SET token='${token}' WHERE "userId" = ${user.rows[0].id};`)
+
+            return res.status(200).send({ token: token })
+        }
+
+        const token = uuid()
+
+        await db.query(`INSERT INTO sessions ("userId", token) VALUES (${user.rows[0].id}, '${token}');`)
+
+        return res.status(200).send(token)
 
 
     } catch (error) {
