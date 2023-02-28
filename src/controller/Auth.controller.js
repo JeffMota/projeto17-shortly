@@ -28,6 +28,7 @@ export async function signin(req, res) {
 
     try {
         const user = await db.query(`SELECT * FROM users WHERE email = '${email}';`)
+        if (user.rows.length < 1) return res.sendStatus(401)
         const passwordIsCorrect = bcrypt.compareSync(password, user.rows[0].password)
         if (!passwordIsCorrect) return res.sendStatus(401)
 
@@ -46,7 +47,7 @@ export async function signin(req, res) {
 
         await db.query(`INSERT INTO sessions ("userId", token) VALUES (${user.rows[0].id}, '${token}');`)
 
-        return res.status(200).send(token)
+        return res.status(200).send({ token: token })
 
 
     } catch (error) {

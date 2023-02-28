@@ -27,7 +27,8 @@ SET default_table_access_method = heap;
 CREATE TABLE public.sessions (
     id integer NOT NULL,
     "userId" integer NOT NULL,
-    token text NOT NULL
+    token text NOT NULL,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -93,7 +94,8 @@ CREATE TABLE public.users (
     id integer NOT NULL,
     name character varying(50) NOT NULL,
     email text NOT NULL,
-    password text NOT NULL
+    password text NOT NULL,
+    "createdAt" timestamp without time zone DEFAULT now()
 );
 
 
@@ -142,7 +144,6 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.sessions VALUES (1, 4, '18084d7c-b963-4c32-ab60-4560ed6e1a2a');
 
 
 --
@@ -156,16 +157,16 @@ INSERT INTO public.urls VALUES (1, 4, '45FwF2nex9', 'data:image/jpeg;base64,/9j/
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.users VALUES (1, 'Jefferson', 'jeff@email.com', '123456');
-INSERT INTO public.users VALUES (2, 'Armando', 'arm@email.com', '123456');
-INSERT INTO public.users VALUES (4, 'Bento', 'bento@email.com', '$2b$10$.H1nSEo846w0kZE/DJZLGOcE.3VRwcoepqdHlKHnjsE5m23EvTAyG');
+INSERT INTO public.users VALUES (1, 'Jefferson', 'jeff@email.com', '123456', '2023-02-28 12:36:58.060197');
+INSERT INTO public.users VALUES (2, 'Armando', 'arm@email.com', '123456', '2023-02-28 12:36:58.060197');
+INSERT INTO public.users VALUES (4, 'Bento', 'bento@email.com', '$2b$10$.H1nSEo846w0kZE/DJZLGOcE.3VRwcoepqdHlKHnjsE5m23EvTAyG', '2023-02-28 12:36:58.060197');
 
 
 --
 -- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.sessions_id_seq', 1, true);
+SELECT pg_catalog.setval('public.sessions_id_seq', 1, false);
 
 
 --
