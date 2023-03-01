@@ -49,3 +49,21 @@ export async function openUrl(req, res) {
         res.status(500).send(error.message)
     }
 }
+
+export async function deleteUrl(req, res) {
+    const urlId = req.params.id
+    const { userId } = res.locals.session
+
+    try {
+
+        const { rows } = await db.query('SELECT * FROM urls WHERE id = $1;', [urlId])
+        if (rows.length === 0) return res.sendStatus(404)
+        if (rows[0].userId !== userId) return res.sendStatus(401)
+
+        await db.query('DELETE FROM urls WHERE id = $1;', [urlId])
+        res.sendStatus(204)
+
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
+}
