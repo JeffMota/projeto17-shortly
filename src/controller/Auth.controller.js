@@ -38,14 +38,14 @@ export async function signin(req, res) {
 
             const token = uuid()
 
-            await db.query(`UPDATE sessions SET token='${token}' WHERE "userId" = ${user.rows[0].id};`)
+            await db.query(`UPDATE sessions SET token=$1 WHERE "userId" = $2;`, [token, user.rows[0].id])
 
             return res.status(200).send({ token: token })
         }
 
         const token = uuid()
 
-        await db.query(`INSERT INTO sessions ("userId", token) VALUES (${user.rows[0].id}, '${token}');`)
+        await db.query(`INSERT INTO sessions ("userId", token) VALUES ($1, $2);`, [user.rows[0].id, token])
 
         return res.status(200).send({ token: token })
 
