@@ -4,6 +4,7 @@ export default function validateToken() {
 
     return async (req, res, next) => {
         const { authorization } = req.headers
+        if (!authorization) return res.sendStatus(401)
         const token = authorization.replace('Bearer ', '')
 
         const tokenExist = await db.query(`SELECT * FROM sessions WHERE token = '${token}';`)

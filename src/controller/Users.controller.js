@@ -1,5 +1,29 @@
 import { db } from "../config/database.connect.js";
 
+export async function ranking(req, res) {
+    try {
+
+        const { rows } = await db.query(`
+        SELECT 
+            users.id, 
+            users.name, 
+            COUNT(urls) AS "linksCount", 
+            SUM(urls."visitCount") AS "visitCount" 
+        FROM users 
+        JOIN urls 
+        ON urls."userId" = users.id 
+        GROUP BY users.id 
+        ORDER BY "visitCount" DESC 
+        LIMIT(10)
+        ;`)
+
+        res.send(rows)
+
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
+}
+
 export async function getMe(req, res) {
     const userId = res.locals.session.userId
 
