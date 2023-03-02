@@ -144,6 +144,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: -
 --
 
+INSERT INTO public.sessions VALUES (1, 4, 'd45f1171-2517-4c35-9645-49857f672d9c', '2023-03-02 11:03:45.448106');
 
 
 --
@@ -166,7 +167,7 @@ INSERT INTO public.users VALUES (4, 'Bento', 'bento@email.com', '$2b$10$.H1nSEo8
 -- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.sessions_id_seq', 1, false);
+SELECT pg_catalog.setval('public.sessions_id_seq', 1, true);
 
 
 --

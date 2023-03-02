@@ -43,7 +43,7 @@ export async function openUrl(req, res) {
 
         await db.query('UPDATE urls SET "visitCount" = $1 WHERE id = $2;', [rows[0].visitCount + 1, rows[0].id])
 
-        res.redirect(200, rows[0].url)
+        res.redirect(302, rows[0].url)
 
     } catch (error) {
         res.status(500).send(error.message)
