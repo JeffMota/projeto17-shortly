@@ -10,7 +10,7 @@ const server = express()
 server.use(cors())
 server.use(express.json())
 
-server.use([authRouter, usersRouter, urlRouter])
+server.use([authRouter, urlRouter, usersRouter])
 
 const PORT = process.env.PORT || 5000
 server.listen(PORT, () => console.log(`Rodando na porta ${PORT}`))
